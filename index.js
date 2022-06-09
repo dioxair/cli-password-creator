@@ -1,11 +1,22 @@
-const prompt = require("prompt-sync")({ sigint: true });
-let Spinner = require("cli-spinner").Spinner;
+import inquirer from "inquirer";
+import Spinner from "cli-spinner";
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-const clipboard = require("copy-paste");
+import clipboard from "copy-paste";
 
 console.log("How long should the password be?");
 
-let passwordLength = prompt(">> ");
+let passwordLength = "";
+
+const passwordLengthPrompt = await inquirer.prompt({
+  name: "password_length",
+  type: "input",
+  message: ">> ",
+  default() {
+    return 25;
+  },
+});
+
+passwordLength = passwordLengthPrompt.password_length;
 passwordLength = Number(passwordLength);
 
 function getPassword() {
@@ -22,8 +33,8 @@ function getPassword() {
 }
 
 async function loadingSpin() {
-  generatedPassword = getPassword();
-  let spinner = new Spinner("Generating password %s");
+  let generatedPassword = getPassword();
+  let spinner = new Spinner.Spinner("Generating password %s");
   spinner.setSpinnerString("|/-\\");
   spinner.start();
 
@@ -34,10 +45,17 @@ async function loadingSpin() {
 
   console.log("\n\nShould I copy the password to your clipboard? (y/n)");
 
-  decision = prompt(">> ");
+  const decision = await inquirer.prompt({
+    name: "decision",
+    type: "input",
+    message: ">> ",
+    default() {
+      return "y";
+    },
+  });
 
-  if (decision === "y") {
-    let spinner = new Spinner("Copying to clipboard %s");
+  if (decision.decision === "y") {
+    let spinner = new Spinner.Spinner("Copying to clipboard %s");
     spinner.setSpinnerString("|/-\\");
     spinner.start();
 
