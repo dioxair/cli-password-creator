@@ -1,6 +1,7 @@
 const prompt = require("prompt-sync")({ sigint: true });
 let Spinner = require("cli-spinner").Spinner;
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+const clipboard = require("copy-paste");
 
 console.log("How long should the password be?");
 
@@ -21,6 +22,7 @@ function getPassword() {
 }
 
 async function loadingSpin() {
+  generatedPassword = getPassword();
   let spinner = new Spinner("Generating password %s");
   spinner.setSpinnerString("|/-\\");
   spinner.start();
@@ -28,7 +30,26 @@ async function loadingSpin() {
   await delay(3000);
   spinner.stop();
 
-  console.log(`\n\nHere's your generated password: ${getPassword()}`);
+  console.log(`\n\nHere's your generated password: ${generatedPassword}`);
+
+  console.log("\n\nShould I copy the password to your clipboard? (y/n)");
+
+  decision = prompt(">> ");
+
+  if (decision === "y") {
+    let spinner = new Spinner("Copying to clipboard %s");
+    spinner.setSpinnerString("|/-\\");
+    spinner.start();
+
+    await delay(2000);
+    clipboard.copy(generatedPassword);
+
+    spinner.stop();
+    process.exit(0);
+  } else {
+    console.log("\n Ok! I wont copy it to the clipboard!");
+    process.exit(0);
+  }
 }
 
 loadingSpin();
