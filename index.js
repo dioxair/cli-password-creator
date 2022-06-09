@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import inquirer from "inquirer";
 import Spinner from "cli-spinner";
 const delay = (ms) => new Promise((res) => setTimeout(res, ms)); // await.sleep in js when

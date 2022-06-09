@@ -1,6 +1,6 @@
 {
   "name": "cli-password-creator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI script to generate passwords for you!",
   "main": "index.js",
   "type": "module",
